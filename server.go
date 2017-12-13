@@ -45,6 +45,23 @@ func NewServer(addr string, handler http.Handler, readTimeout, writeTimeout time
 	}
 }
 
+func NewServerWithHttpInstance(server *http.Server) *Server {
+
+	// 获取环境变量
+	isGraceful := false
+	if os.Getenv(GRACEFUL_ENVIRON_KEY) != "" {
+		isGraceful = true
+	}
+
+	// 实例化Server
+	return &Server{
+		httpServer: server,
+
+		isGraceful: isGraceful,
+		signalChan: make(chan os.Signal),
+	}
+}
+
 func (srv *Server) ListenAndServe() error {
 	addr := srv.httpServer.Addr
 	if addr == "" {

@@ -18,6 +18,10 @@ func ListenAndServe(addr string, handler http.Handler) error {
 	return NewServer(addr, handler, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT).ListenAndServe()
 }
 
+func ListenAndServeWithHttpInstance(server *http.Server) error {
+	return NewServer(server.Addr, server.Handler, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT).ListenAndServe()
+}
+
 // refer http.ListenAndServeTLS
 func ListenAndServeTLS(addr string, certFile string, keyFile string, handler http.Handler) error {
 	return NewServer(addr, handler, DEFAULT_READ_TIMEOUT, DEFAULT_WRITE_TIMEOUT).ListenAndServeTLS(certFile, keyFile)
